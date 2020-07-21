@@ -1,0 +1,21 @@
+
+Script files:
+
+basicif.m:
+    demonstrate using if-else-end statement
+
+branch.m: examples of using if-end and if-else-end branching control flow.
+    Also shows using approximate equality in comparing non-integer numbers.
+
+grades.m:
+    using if-elseif and switch-case to determine grades
+
+flop_equality.m:
+    a warning about testing for exact equality 
+
+Be sure to read and run them. Also be sure to experiment with them, and fully
+understand what is happening in them. Some questions and suggestions for
+modification are in the comments - answer those and try the modifications. The
+goal is to be comfortable with everything that is done in them (minus one or
+two exceptions explicitly identified in the comments)
+

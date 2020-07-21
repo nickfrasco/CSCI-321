@@ -1,0 +1,74 @@
+
+
+This directory has some utilities I find useful in Matlab, and some examples of
+usage. The most important ones needed for Matlab m-files I distribute are ccc.m and
+positionfig.m. If you don't care about Matlab's placement of graphics windows, edit
+the latter to replace the line
+    justreturn = false;
+with
+    justreturn = true;
+and it will just pass through calls to Matlab's figure command.
+
+All of these files should be put into your base Matlab directory, and they will be
+available from any Matlab session on that machine. Or you can put them into a folder
+like A321/Utilities and then add that folder to the path using Matlab's addpath()
+function.
+
+Read the documentation in the individual files for more info than is shown below.
+
+Last Modified: Tue 15 Jan 2019, 05:00 PM
+
+----------
+Base file
+----------
+startup.m: sets up preferences and some global settings. Currently just sets
+    formatting and specifies grid lines on plots, but includes a commented-out
+    line that shows how to make Matlab add a folder to its search path.
+
+
+-----
+Times
+-----
+TimeUnits.m: converts a number of seconds into larger units like minutes, hours,
+    centuries, etc. 
+
+showtimes.m: calls TimeUnits and then pretty-prints out the time in different
+    larger units, as long as the larger units are greater or equal to 1. 
+
+OtherUnits.m: return time units like days, months, etc. in number of seconds
+
+demotimeunits.m: a script that demonstrates calling TimeUnits.m
+
+-----------
+Utilities
+-----------
+ccc.m: clears everything from a Matlab session to start over
+
+ijmat.m: Creates a matrix A such that A(i,j) = 10*i+j. This is useful for
+    experimenting with indexing in Matlab
+
+
+-----------
+Graphics 
+-----------
+enlargeaxis.m: expands x/y limits of a 2D plot 
+
+hline.m: adds one or more horizontal lines to a plot
+
+vline.m: adds vertical lines to a plot
+
+azrotate.m: rotates a plot in the azimuth. useful for spinning an object without
+    having to use the mouse.
+
+positionfig.m: a replacement for "figure" that will place graphics windows where
+    desired, to avoid them overlapping each other. Especially useful for 
+    multi-monitor setups. Set justreturn = true to get a regular figure window
+setup_positionfig.m: used to provide the positionings used in positionfig.m
+
+colormaps.m: returns an array of the named colormaps in Matlab. Also sorts into
+    some categories; "physical" is probably the most useful.
+
+memuse.m: for people using Mac or Unix platforms, the Matlab function memory.m does
+    not work. This replaces it by providing an estimate of the amount of memory
+    currently being used by Matlab.
+

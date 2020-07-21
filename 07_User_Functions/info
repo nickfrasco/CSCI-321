@@ -1,0 +1,53 @@
+
+Generally each subfolder will also have a file named "info" with some explanation
+of the contents. Those are not shown in this listing, but should be read as well.
+
+.
+|-- Function_Notes: The notes about functions, not including the files. This
+|                   has much of the explanation about the rules of using functions
+|
+|-- functions1
+|   |-- loopy.m : 
+|   |-- collatz_path.m : both of these scripts are examples of why you would want 
+                         to use functions instead of scripts
+|
+|-- functions2:  contains a function and test script that use disp() to show the 
+|   |            sequence and process of calling a function
+|   |-- testfuns2.m: A script that calls funs2.m, printing some info before and after
+|                    calling it. 
+|   |-- funs2.m: A function that just displays how 
+|                1. locally (that is, in the function) defined variables like t
+|                   disappear when the function ends
+|                2. using the keyboard command to allow you to examine variables
+|                   and such inside of a function for debugging.
+|                3. printing messages from inside the function
+|
+|-- functions3
+|   |-- em1.m    : a function that computes 1 + exp(-x), where x is a vector
+|   |-- testem1.m : script with 2 tests: one that works, one with x not a vector.
+|                   This also shows that what when the function em1.m is called,
+|                   its input variable can be named anything in the calling script,
+                    but will be named "x" inside the function.
+|   |-- hideme.m  : a script that defines a variable n different from the one that
+|                   gets defined in em1.m. Shows that the variable n in the script
+|                   is different from and not affected by the variable n in the
+|                   function. Only if n were an ouput argument of em1 would this
+|                   the value set in hideme.m be changed in the script that calls it.
+|
+|-- functions4 : a script and 2 functions showing the file name is what Matlab
+|   |            looks up to find a function, and it ignores the name of the
+|   |            function in the file it executes.
+|   |-- dumb.m :  the driver script
+|   |-- cube.m :  contains a function named "square"
+|   |-- square.m : contains a function named "cube"
+|
+|-- functions5 : showing how to handle different numbers of input/output arguments
+|   |-- narg_script.m
+|   |-- sumpum.m
+|
+|-- functions6 : examples of variations on input and output variable names
+|   |-- demo_args.m : A script that calls fun2.m in various ways
+|   |-- fun1.m : A function with simplest calling sequence
+|   |-- fun2.m : A function with simple calling sequence, but is called in various
+|           possible ways.
+|

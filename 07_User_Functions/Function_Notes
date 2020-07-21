@@ -1,0 +1,192 @@
+---------------------
+Rules for functions:
+---------------------
+
+1. The first non-comment, non-blank line of a Matlab function must have the 
+   keyword "function". Without that, the m-file is a script, not a function. You run a
+   script by typing its name without the .m suffix. The lines in a script are executed
+   in order, and on reaching the end of the script control returns to the command
+   window.
+
+   A function usually has required input arguments, and cannot be executed just by
+   typing its name (with or without the .m suffix). Instead you *MUST* provide the
+   required input arguments in parentheses after the function name. Just like with
+   a math function, it makes no sense to invoke it without the necessary inputs.
+        y1 = sqrt(3)    % OK i
+        y2 = sqrt(-3)   % Still OK in Matlab
+        y3 = sqrt(x)    % OK only if the variable x has been defined beforehand
+        y4 = sqrt       % Square root of who or what? Obviously, this is nonsense
+        sqrt            % Still nonsensical
+        
+   Why you can run a script just by typing its name: scripts do not have input or
+   output variables. The variables it defines remain in the workspace, which can be
+   a problem.
+
+
+2. The name of the function in the file containing it is irrelevant. When Matlab
+   encounters a name like "fname" when executing an m-file or in the command window,
+   it goes through sequence of steps to find what it refers to:
+
+   a. if the name is of a variable in the current workspace, then Matlab uses the
+   variable with that name.
+
+   b. otherwise, Matlab looks for an m-file in the working directory (the one shown
+   in the GUI, or displayed by doing "pwd" = "print working directory") with the
+   name "fname.m". If such a file exists in the working folder, Matlab will execute it.
+
+   c. otherwise, Matlab will start searching through its "search path", which is
+   shown when you execute the command "path". It will go through the folders in the
+   search path from the first to the last, terminating the first time it finds one
+   with a file "fname.m" in it.  If found,  Matlab will execute it. If it is not
+   found in any of the folders in the search path, Matlab will throw an error.
+
+   A consequence of this is in the sub-folder functions4. The file square.m
+   contains a function named "cube", and the file cube.m has a function named
+   "square". Invoking y = square(x) will cause Matlab to execute the cube() function
+   in square.m.  Read dumb.m in that subfolder for more info.
+
+3. The only variables available when the function is executing are the ones passed in
+   as input arguments, or which are created and defined inside the function. When the
+   function completes its tasks, the only variables from the function that are
+   available to the m-file or command window which invoked the function are the ones
+   passed back in the output argument list. [There are some minor exceptions, covered
+   later].
+
+   Using other terminology: the only variables "visible" or usable in a function are
+   the ones provided as input arguments, or are defined "inside" the function. When
+   the function finishes, any variables that were created and used in the function
+   are destroyed and not available to the m-file that invoked the function - unless
+   they are returned as output arguments. The subfolder functions3 has an example of
+   how the variables in a function's workspace differ from those in the overall
+   workspace.
+
+   A problem with this is if something goes wrong in the function. In that case, it
+   returns with the error message but the variables that caused barfage are not 
+   available for examination. To resolve this, you can
+
+        a. edit the function, and insert commands like whos or use disp() to
+            display values of the variables while the function is executing
+            The function in functions2/funs2.m has had this done with it. When you
+            finish debugging the function just be sure to remove or comment out
+            those commands or they will print out every time the function is called.
+        b. insert the command "keyboard" just before the line in the function that
+            caused the error. You can then use interactive commands to view
+            variables, run whos, etc. When you finish, give the command "dbcont"
+            and Matlab will return to executing the function. Or use "return" to
+            return to the script or function that invoked the current one.
+        c. put the command "dbquit if error" into the script that calls the function.
+            This is like automatically entefing the "keyboard" state whenever an 
+            error is encountered, but you exit the interactive examination by the
+            command "dbquit".
+
+   Of course, the best option is 
+        d. don't make mistakes with your functions
+
+
+4. The input variables are specified by position. Suppose a Matlab function is defined
+   in an m-file f.m with a header line like
+        function y = f(a, b, c)
+   From an m-file it is then is invoked as
+        d = 12.6;
+        r = 'Holy Moly';
+        u = randn(1,7);
+        result = f(r, d, u)
+   Then in the function f the variables d, r, and u are not available. Instead, the
+   function will have available variables named a, b, c with the values
+        a = 'Holy Moly';
+        b = 12.6;
+        c = randn(1,7);
+   If inside the function you try to use the variables d, r, or u, it will cause
+   an error. So in the function f(), a line like
+        n = length(u)
+   will cause a error telling you that u is not defined. Instead, you need to use
+   the names that the function uses:
+        n = length(c)
+   This will work and it return n = 7.
+
+   If later you call the function using
+        result = f(u, d, r)
+   then while executing, the function f will return n = 1 when it encounters the
+   line
+        n = length(c)
+
+5. A similar dependence on the positional order of output arguments applies.
+   If w = rand(3,5) then calling the size function as
+        [number_of_rows, number_of_columns] = size(w)
+   will return number_of_rows = 3 and number_of_columns = 5. If instead you call
+   it as
+        [number_of_columns, number_of_rows] = size(w)
+   it will return number_of_rows = 5 and number_of_columns = 3. The first output
+   argument will get the value 3, and the second argument will get the value 5.
+
+   As a minor note, invoking it as [number_of_columns, number_of_rows] = size(w)
+   is deceptive and should be avoided. A variable named "number_of_rows" should
+   contain, well, the number of rows. Having it hold instead the number of columns
+   is just a major bug waiting to happen and will foul up your thinking when
+   developing Matlab code. 
+
+6. Many Matlab functions can take a variable number of input arguments and return
+   a variable number of output arguments. Plotting a vector y against x can take
+   the form
+        plot(x, y)
+   or
+        plot(x, y, 'g-')
+   In the first case, Matlab will use a default setting for the third argument,
+   which for plot is 'b-', a blue line. This is a common case for a variable
+   number of input arguments, to provide default settings or values which the
+   user can override by explicitly giving the extra input arguments. In the
+   function, the automatically-set variable "nargin" gives the number of input
+   arguments the function was invoked with. Similarly, "nargout" provides how
+   many output arguments are expected by whoever invoked the function. 
+
+   The subfolder functions5 has a script narg_script.m which calls a function
+   sumpum.m to demonstrate differing numbers of input and output arguments.
+
+   A more complex mechanism involving the keywords "varargin" and "varargout"
+   will be postponed until after we cover cell arrays.
+
+
+7. You will die a horrible death (acdemically, at least) if you don't internalize this:
+
+    Look at the files in the subfolder functions2. An important point: in the
+    command window, you do *not* run funs2.m by typing its name, viz.,
+
+    >> funs2
+    
+    Instead it must be invoked with the input arguments it requires. In general,
+    never run a function just by typing its name in the command window. Instead
+    create a script that sets up the required input arguments and have it call
+    funs2.m. That is what the testfuns2.m script does, and when you write your own
+    functions you should write a test script for each one. 
+
+    So running this and checking what it does involves running the script, not the
+    function, from the command window:
+
+    >> testfuns2
+    
+    Repeating: never try to run a function by just typing its name in the command
+    window, or hitting the "run" button in the GUI. Unless the function takes no
+    input arguments, it will fail. This is like defining a function in math, e.g.,
+    f(x) = 3*x - 1. It makes no sense to just do y = f, since f can only be evaluated
+    if some variable x is provided to it: y = f(v) or y = f(37.1). 
+
+    (*) For funs2.m, you could enter in the command window the instructions to
+    set up its input argument, and then run it, viz.,
+
+        >> x = linspace(1,12,35);
+        >> s = funs2(x);
+        >> disp('After calling funs2 now have s = ')
+        >> disp(s)
+        >> disp('whos now shows:')
+        >> whos
+
+    But then you would have to do that everytime you modify or retry the function
+    while developing it and debugging it. That means typing those 116 characters
+    over and over again, instead of the 8 characters required for
+
+        >> testfuns2
+    
+    The longer 116-character version also means a greater chance for typos and errors.
+    It will also lead to you wasting a lot of time in typing the same things
+    repeatedly. Use a script, that is what they are for. 
+

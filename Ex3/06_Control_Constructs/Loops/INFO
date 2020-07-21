@@ -1,0 +1,27 @@
+
+These examples demonstrate different control structures in Matlab:
+if-else, for loops, while loops, try-catch, and case-switch. They include
+using input() to get a user-provided parameter, mod() to get the remainder
+when a number is divided by another, randperm() to randomly permute a
+set of integers, exp() to compute Euler's exponential function, and
+tic/toc to time a code fragment. 
+
+------------------
+for-loop examples 
+------------------
+loops1.m: the basic single loop
+loops2.m: using it to show the sequence of plots for sine frequencies
+loops3.m: the values in the index array can be in any order
+loops4.m: demonstrates nested loops, and preallocation of arrays
+loops5.m: verify that the double nested loops matched the ij-matrix
+
+-------------------
+while-loop examples
+-------------------
+whiles1.m: basic while loop info
+whiles2.m: testing the Collatz conjecture with a while loop
+whiles3.m: a better Collatz checker
+whiles4.m: a Collatz checker that tests its input value for common errors
+
+trycatch.m: examples of a try-catch control structure
+
